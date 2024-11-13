@@ -1,0 +1,25 @@
+###
+#
+#
+#
+###
+
+ignore-empty-password
+font="JetBrains Nerdfont Mono"
+
+clock
+timestr=%R
+datestr=%a, %e. %b %Y
+
+image=~/.wallpaper/nord.png
+
+effect-greyscale
+effect-pixelate=8
+
+indicator
+indicator-radius=200
+
+indicator-thickness=20
+indicator-caps-lock
+
+grace=5

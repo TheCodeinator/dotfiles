@@ -1,0 +1,14 @@
+general.import = ["~/.config/alacritty/catppuccin-mocha.toml"]
+
+[window]
+opacity = 0.80
+blur = true
+padding = {x = 2, y = 2}
+dynamic_padding = true
+
+[cursor]
+style = { shape = "Beam" }
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font Mono", style = "Regular" }
+size = 12
