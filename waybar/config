@@ -2,25 +2,38 @@
     "layer": "top", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
     "height": 40, // Waybar height (to be removed for auto height)
+    
     // Choose the order of the modules
     "modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
-    "modules-center": [],
-    "modules-right": ["sway/scratchpad", "tray", "idle_inhibitor", "disk", "cpu", "memory", "network", "backlight", "pulseaudio", "battery", "clock"],
+    "modules-center": ["clock"],
+    "modules-right": ["power-profiles-daemon", "idle_inhibitor", "disk", "cpu", "memory", "network", "backlight", "pulseaudio", "battery", "custom/notification", "tray", "custom/power"],
+    
     // Modules configuration
      "sway/workspaces": {
          "disable-scroll": true,
          "all-outputs": false,
-    //     "format": "{name}: {icon}",
-    //     "format-icons": {
-    //         "1": "",
-    //         "2": "",
-    //         "3": "",
-    //         "4": "",
-    //         "5": "",
-    //         "urgent": "",
-    //         "focused": "",
-    //         "default": ""
-    //     }
+       "format": "{name}: {icon}",
+       "format-icons": {
+         "1": "",
+         "2": "",
+         "3": "",
+         "4": "",
+         "5": "",
+         "urgent": "",
+         "focused": "",
+         "default": ""
+       }
+    },
+    "power-profiles-daemon": {
+      "format": "{icon}",
+      "tooltip-format": "Power profile: {profile} Driver: {driver}",
+      "tooltip": true,
+      "format-icons": {
+        "default": "",
+        "performance": "",
+        "balanced": "",
+        "power-saver": ""
+      }
     },
     
     "keyboard-state": {
@@ -83,12 +96,12 @@
         }
     },
     "tray": {
-        //"icon-size": 21,
-        "spacing": 10
+        "icon-size": 15,
+        "spacing": 5
     },
     "clock": {
         "timezone": "Europe/Berlin",
-        "format": "{:%d. %b %Y, %a %T}",
+        "format": "{:%d. %b %y, %a %T}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
 	"interval": 1
     },
@@ -99,7 +112,7 @@
         "on-click-release": "kitty btop",
     },
     "memory": {
-        "format": "{}% ",
+        "format": "{}% ",
         "interval": 2
     },
     "temperature": {
@@ -117,10 +130,9 @@
         "format-icons": ["", ""]
     },
     "battery": {
-	"interval": 10,
+	"interval": 30,
         "states": {
-            // "good": 95,
-            "warning": 30,
+            "warning": 20,
             "critical": 10
         },
         "format": "{capacity}% {time} {icon}",
@@ -130,10 +142,29 @@
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
         "format-icons": ["", "", "", "", ""],
-	"format-time": "{H}:{M}"
+	"format-time": "{H}:{M}",
+	"tooltip": true,
+	"tooltip-format": "Health: {health}% Cycles: {cycles}"
     },
-    "battery#bat2": {
-        "bat": "BAT2"
+    "custom/notification": {
+    	"tooltip": false,
+    	"format": "{icon}",
+    	"format-icons": {
+      		"notification": "<span foreground='red'><sup></sup></span>",
+      		"none": "",
+      		"dnd-notification": "<span foreground='red'><sup></sup></span>",
+      		"dnd-none": "",
+      		"inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      		"inhibited-none": "",
+      		"dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+      		"dnd-inhibited-none": ""
+    	},
+    	"return-type": "json",
+    	"exec-if": "which swaync-client",
+    	"exec": "swaync-client -swb",
+    	"on-click": "swaync-client -t -sw",
+    	"on-click-right": "swaync-client -d -sw",
+    	"escape": true
     },
     "disk": {
         "interval": 30,
@@ -142,16 +173,18 @@
         "tooltip": true,
         "warning": 80,
         "critical": 90,
-        "on-click-release": "kitty --hold fish -c dua"
+        "on-click-release": "alacritty --hold fish -c dua"
     },
     "network": {
-        "format-wifi": "{signalStrength}% ",
-        //"format-wifi": " ",
+        //"format-wifi": "{signalStrength}% ",
+        "format-wifi": "",
         // "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
         "format-ethernet": "ETH ",
         "format-linked": "ETH (No IP) ",
         "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{essid}: {ipaddr}/{cidr}"
+        "format-alt": "{essid}: {ipaddr}/{cidr}",
+	"tooltip": true,
+	"tooltip-format": "{essid}: {signalStrength}% ", 
     },
     "group/group-audio": {
         "orientation": "inherit",
@@ -188,5 +221,12 @@
     },
     "pulseaudio/slider": { // This crashes when scrolling too much so not using it.
     "orientation": "inherit"
-    }
+    },
+    "custom/power": {
+        "format": "",
+        "exec": "echo ; echo  Logout",
+        "on-click": "wlogout -p layer-shell",
+        "interval" : 86400, // once every day
+        "tooltip": true
+    },
 }
